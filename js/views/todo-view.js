@@ -12,9 +12,6 @@ var app = app || {};
 		//... is a list tag.
 		tagName:  'li',
 
-		// Cache the template function for a single item.
-		template: _.template($('#item-template').html()),
-
 		// The DOM events specific to an item.
 		events: {
 			'click .toggle': 'toggleCompleted',
@@ -48,7 +45,9 @@ var app = app || {};
 				return;
 			}
 
-			this.$el.html(this.template(this.model.toJSON()));
+			React.render(React.createElement(app.TodoItem, {
+				todo: this.model
+			}), this.$el[0]);
 			this.$el.toggleClass('completed', this.model.get('completed'));
 			this.toggleVisible();
 			this.$input = this.$('.edit');
