@@ -66,7 +66,6 @@ var app = app || {};
 		// Switch this view into `"editing"` mode, displaying the input field.
 		edit: function () {
 			this.$el.addClass('editing');
-			this.$input.focus();
 		},
 
 		// Close the `"editing"` mode, saving changes to the todo.

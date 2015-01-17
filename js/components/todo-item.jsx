@@ -18,6 +18,11 @@ var app = app || {};
 			});
 		},
 
+		// Switch this view into `"editing"` mode, displaying the input field.
+		edit: function () {
+			this.refs.editInput.getDOMNode().focus();
+		},
+
 		render: function() {
 			var todoData = this.props.todo.toJSON();
 			return (
@@ -27,10 +32,10 @@ var app = app || {};
 							type="checkbox"
 							checked={this.state.completed}
 							onChange={this.toggleCompleted}/>
-						<label>{todoData.title}</label>
+						<label onDoubleClick={this.edit}>{todoData.title}</label>
 						<button className="destroy"></button>
 					</div>
-					<input className="edit" defaultValue={todoData.title} />
+					<input ref="editInput" className="edit" defaultValue={todoData.title} />
 				</div>
 			);
 		}
