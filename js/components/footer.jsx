@@ -13,6 +13,25 @@ var app = app || {};
       var todos = this.props.todos,
         remaining = todos.remaining().length,
         completed = todos.completed().length,
+        routers = [{
+          name: 'All',
+          path: ''
+        }, {
+          name: 'Active',
+          path: 'active'
+        }, {
+          name: 'Completed',
+          path: 'completed'
+        }],
+        filters = _(routers).map(function(router) {
+          return (
+            <li key={router.path}>
+              <a className={React.addons.classSet({
+                'selected': app.TodoFilter === router.path
+              })} href={'#/' + router.path}>{router.name}</a>
+            </li>
+          );
+        }),
         clearButton;
       if (completed) {
         clearButton = <button id="clear-completed" onClick={this.clearCompleted}>Clear completed ({completed})</button>
@@ -24,15 +43,7 @@ var app = app || {};
             {remaining === 1 ? 'item' : 'items'} left
           </span>
           <ul id="filters">
-            <li>
-              <a className="selected" href="#/">All</a>
-            </li>
-            <li>
-              <a href="#/active">Active</a>
-            </li>
-            <li>
-              <a href="#/completed">Completed</a>
-            </li>
+            {filters}
           </ul>
           {clearButton}
         </footer>

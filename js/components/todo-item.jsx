@@ -83,14 +83,12 @@ var app = app || {};
 					'editing': this.state.isEditing,
 					'hidden': todo.completed ? app.TodoFilter === 'active' : app.TodoFilter === 'completed'
 				})}>
-					<div className="view">
-						<input className="toggle"
-							type="checkbox"
-							checked={todo.completed}
-							onChange={this.toggleCompleted}/>
-						<label onDoubleClick={this.edit}>{todo.title}</label>
-						<button onClick={this.clear} className="destroy"></button>
-					</div>
+					<input className="toggle"
+						type="checkbox"
+						checked={todo.completed}
+						onChange={this.toggleCompleted}/>
+					<label onDoubleClick={this.edit}>{todo.title}</label>
+					<button onClick={this.clear} className="destroy"></button>
 					<input ref="editInput"
 						onBlur={this.close}
 						className="edit"

@@ -42,13 +42,6 @@ var app = app || {};
 			React.render(React.createElement(app.Main, {
 				todos: app.todos
 			}), this.$('#main-container')[0]);
-
-			if (app.todos.length) {
-				this.$('#filters li a')
-					.removeClass('selected')
-					.filter('[href="#/' + (app.TodoFilter || '') + '"]')
-					.addClass('selected');
-			}
 		},
 
 		filterOne: function (todo) {
