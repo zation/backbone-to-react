@@ -34,8 +34,6 @@ var app = app || {};
 			this.$main = this.$('#main');
 			this.$list = $('#todo-list');
 
-			this.listenTo(app.todos, 'add', this.addOne);
-			this.listenTo(app.todos, 'reset', this.addAll);
 			this.listenTo(app.todos, 'change:completed', this.filterOne);
 			this.listenTo(app.todos, 'filter', this.filterAll);
 			this.listenTo(app.todos, 'all', this.render);
@@ -71,19 +69,10 @@ var app = app || {};
 			}
 
 			this.allCheckbox.checked = !remaining;
-		},
 
-		// Add a single todo item to the list by creating a view for it, and
-		// appending its element to the `<ul>`.
-		addOne: function (todo) {
-			var view = new app.TodoView({ model: todo });
-			this.$list.append(view.render().el);
-		},
-
-		// Add all items in the **Todos** collection at once.
-		addAll: function () {
-			this.$list.html('');
-			app.todos.each(this.addOne, this);
+			React.render(React.createElement(app.TodoList, {
+				todos: app.todos
+			}), this.$list[0]);
 		},
 
 		filterOne: function (todo) {

@@ -7,23 +7,8 @@ var app = app || {};
 
 		getInitialState: function() {
 			return {
-				todo: this.props.todo.toJSON(),
 				isEditing: false
 			};
-		},
-
-		setStateOfTodo: function() {
-			this.setState({
-				todo: this.props.todo.toJSON()
-			});
-		},
-
-		componentDidMount: function() {
-			this.props.todo.on('change',this.setStateOfTodo, this);
-		},
-
-		componentWillUnmount: function() {
-			this.props.todo.off('change', this.setStateOfTodo, this);
 		},
 
 		// Switch this view into `"editing"` mode, displaying the input field.
@@ -81,26 +66,29 @@ var app = app || {};
 					isEditing: false
 				});
 				// Also reset the hidden input back to the original value.
-				this.refs.editInput.getDOMNode().value = this.state.todo.title;
+				this.refs.editInput.getDOMNode().value = this.props.todo.get('title');
 			}
 		},
 
 		// Toggle the `"completed"` state of the model.
 		toggleCompleted: function () {
-			this.setState({
-				completed: this.props.todo.toggle()
-			});
+			this.props.todo.toggle();
 		},
 
 		render: function() {
+			var todo = this.props.todo.toJSON();
 			return (
-				<li className={React.addons.classSet({'editing': this.state.isEditing})}>
+				<li className={React.addons.classSet({
+					'completed': todo.completed,
+					'editing': this.state.isEditing,
+					'hidden': todo.completed ? app.TodoFilter === 'active' : app.TodoFilter === 'completed'
+				})}>
 					<div className="view">
 						<input className="toggle"
 							type="checkbox"
-							checked={this.state.todo.completed}
+							checked={todo.completed}
 							onChange={this.toggleCompleted}/>
-						<label onDoubleClick={this.edit}>{this.state.todo.title}</label>
+						<label onDoubleClick={this.edit}>{todo.title}</label>
 						<button onClick={this.clear} className="destroy"></button>
 					</div>
 					<input ref="editInput"
@@ -108,7 +96,7 @@ var app = app || {};
 						className="edit"
 						onKeyPress={this.updateOnEnter}
 						onKeyDown={this.revertOnEscape}
-						defaultValue={this.state.todo.title} />
+						defaultValue={todo.title} />
 				</li>
 			);
 		}
