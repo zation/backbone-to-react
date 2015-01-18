@@ -9,7 +9,7 @@ var app = app || {};
       var list =  this.props.todos.map(function(todo) {
         return <TodoItem key={todo.get('id')} todo={todo}/>
       });
-      return <div>{list}</div>
+      return <ul id="todo-list">{list}</ul>
     }
   });
 })();

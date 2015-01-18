@@ -14,20 +14,10 @@ var app = app || {};
 		// the App already present in the HTML.
 		el: '#todoapp',
 
-		// Delegated events for creating new items, and clearing completed ones.
-		events: {
-			'click #toggle-all': 'toggleAllComplete'
-		},
-
 		// At initialization we bind to the relevant events on the `Todos`
 		// collection, when items are added or changed. Kick things off by
 		// loading any preexisting todos that might be saved in *localStorage*.
 		initialize: function () {
-			this.allCheckbox = this.$('#toggle-all')[0];
-			this.$input = this.$('#new-todo');
-			this.$main = this.$('#main');
-			this.$list = $('#todo-list');
-
 			this.listenTo(app.todos, 'change:completed', this.filterOne);
 			this.listenTo(app.todos, 'filter', this.filterAll);
 			this.listenTo(app.todos, 'all', this.render);
@@ -49,22 +39,16 @@ var app = app || {};
 				todos: app.todos
 			}), this.$('#header-container')[0]);
 
-			if (app.todos.length) {
-				this.$main.show();
+			React.render(React.createElement(app.Main, {
+				todos: app.todos
+			}), this.$('#main-container')[0]);
 
+			if (app.todos.length) {
 				this.$('#filters li a')
 					.removeClass('selected')
 					.filter('[href="#/' + (app.TodoFilter || '') + '"]')
 					.addClass('selected');
-			} else {
-				this.$main.hide();
 			}
-
-			this.allCheckbox.checked = !app.todos.remaining().length;
-
-			React.render(React.createElement(app.TodoList, {
-				todos: app.todos
-			}), this.$list[0]);
 		},
 
 		filterOne: function (todo) {
@@ -73,16 +57,6 @@ var app = app || {};
 
 		filterAll: function () {
 			app.todos.each(this.filterOne, this);
-		},
-
-		toggleAllComplete: function () {
-			var completed = this.allCheckbox.checked;
-
-			app.todos.each(function (todo) {
-				todo.save({
-					completed: completed
-				});
-			});
 		}
 	});
 })(jQuery);
