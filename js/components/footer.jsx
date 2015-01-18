@@ -4,13 +4,18 @@ var app = app || {};
   'use strict';
 
   app.Footer = React.createClass({
+    // Clear all completed todo items, destroying their models.
+    clearCompleted: function () {
+      _.invoke(this.props.todos.completed(), 'destroy');
+    },
+
     render: function() {
       var todos = this.props.todos,
         remaining = todos.remaining().length,
         completed = todos.completed().length,
         clearButton;
       if (completed) {
-        clearButton = <button id="clear-completed">Clear completed ({completed})</button>
+        clearButton = <button id="clear-completed" onClick={this.clearCompleted}>Clear completed ({completed})</button>
       }
       return todos.length === 0 ? null : (
         <footer id="footer">
