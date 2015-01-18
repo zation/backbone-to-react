@@ -18,8 +18,6 @@ var app = app || {};
 		// collection, when items are added or changed. Kick things off by
 		// loading any preexisting todos that might be saved in *localStorage*.
 		initialize: function () {
-			this.listenTo(app.todos, 'change:completed', this.filterOne);
-			this.listenTo(app.todos, 'filter', this.filterAll);
 			this.listenTo(app.todos, 'all', this.render);
 
 			// Suppresses 'add' events with {reset: true} and prevents the app view
@@ -42,14 +40,6 @@ var app = app || {};
 			React.render(React.createElement(app.Main, {
 				todos: app.todos
 			}), this.$('#main-container')[0]);
-		},
-
-		filterOne: function (todo) {
-			todo.trigger('visible');
-		},
-
-		filterAll: function () {
-			app.todos.each(this.filterOne, this);
 		}
 	});
 })(jQuery);
