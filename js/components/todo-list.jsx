@@ -7,7 +7,7 @@ var app = app || {};
   app.TodoList = React.createClass({
     render: function() {
       var list =  this.props.todos.map(function(todo) {
-        return <TodoItem todo={todo}/>
+        return <TodoItem key={todo.get('id')} todo={todo}/>
       });
       return <div>{list}</div>
     }

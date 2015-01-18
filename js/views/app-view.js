@@ -16,7 +16,6 @@ var app = app || {};
 
 		// Delegated events for creating new items, and clearing completed ones.
 		events: {
-			'keypress #new-todo': 'createOnEnter',
 			'click #toggle-all': 'toggleAllComplete'
 		},
 
@@ -46,6 +45,10 @@ var app = app || {};
 				todos: app.todos
 			}), this.$('#footer-container')[0]);
 
+			React.render(React.createElement(app.Header, {
+				todos: app.todos
+			}), this.$('#header-container')[0]);
+
 			if (app.todos.length) {
 				this.$main.show();
 
@@ -70,24 +73,6 @@ var app = app || {};
 
 		filterAll: function () {
 			app.todos.each(this.filterOne, this);
-		},
-
-		// Generate the attributes for a new Todo item.
-		newAttributes: function () {
-			return {
-				title: this.$input.val().trim(),
-				order: app.todos.nextOrder(),
-				completed: false
-			};
-		},
-
-		// If you hit return in the main input field, create new **Todo** model,
-		// persisting it to *localStorage*.
-		createOnEnter: function (e) {
-			if (e.which === ENTER_KEY && this.$input.val().trim()) {
-				app.todos.create(this.newAttributes());
-				this.$input.val('');
-			}
 		},
 
 		toggleAllComplete: function () {

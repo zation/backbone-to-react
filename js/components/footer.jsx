@@ -20,12 +20,12 @@ var app = app || {};
       return todos.length === 0 ? null : (
         <footer id="footer">
           <span id="todo-count">
-            <strong>{remaining}</strong>
+            <strong>{remaining}</strong>&nbsp;
             {remaining === 1 ? 'item' : 'items'} left
           </span>
           <ul id="filters">
             <li>
-              <a class="selected" href="#/">All</a>
+              <a className="selected" href="#/">All</a>
             </li>
             <li>
               <a href="#/active">Active</a>
