@@ -14,9 +14,6 @@ var app = app || {};
 		// the App already present in the HTML.
 		el: '#todoapp',
 
-		// Our template for the line of statistics at the bottom of the app.
-		statsTemplate: _.template($('#stats-template').html()),
-
 		// Delegated events for creating new items, and clearing completed ones.
 		events: {
 			'keypress #new-todo': 'createOnEnter',
@@ -30,7 +27,6 @@ var app = app || {};
 		initialize: function () {
 			this.allCheckbox = this.$('#toggle-all')[0];
 			this.$input = this.$('#new-todo');
-			this.$footer = this.$('#footer');
 			this.$main = this.$('#main');
 			this.$list = $('#todo-list');
 
@@ -47,17 +43,12 @@ var app = app || {};
 		// Re-rendering the App just means refreshing the statistics -- the rest
 		// of the app doesn't change.
 		render: function () {
-			var completed = app.todos.completed().length;
-			var remaining = app.todos.remaining().length;
+			React.render(React.createElement(app.Footer, {
+				todos: app.todos
+			}), this.$('#footer-container')[0]);
 
 			if (app.todos.length) {
 				this.$main.show();
-				this.$footer.show();
-
-				this.$footer.html(this.statsTemplate({
-					completed: completed,
-					remaining: remaining
-				}));
 
 				this.$('#filters li a')
 					.removeClass('selected')
@@ -65,10 +56,9 @@ var app = app || {};
 					.addClass('selected');
 			} else {
 				this.$main.hide();
-				this.$footer.hide();
 			}
 
-			this.allCheckbox.checked = !remaining;
+			this.allCheckbox.checked = !app.todos.remaining().length;
 
 			React.render(React.createElement(app.TodoList, {
 				todos: app.todos
